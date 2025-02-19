@@ -116,7 +116,7 @@ void * slist_current(const void * slist, size_t item_id) {
 }
 
 void * slist_insert(void * slist, size_t item_id) {
-    
+    return NULL;
 }
 
 void slist_erase(void * slist, size_t item_id, void(*destroy)( void * )) {
