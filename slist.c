@@ -1,10 +1,11 @@
 #include "slist.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 typedef struct Node{
     char * data;
-    void * next;
+    struct Node * next;
 } Node;
 
 typedef struct {
@@ -15,8 +16,7 @@ typedef struct {
 void * slist_create(size_t itemSize) {
     Slist * slist = malloc(sizeof(Slist));
     slist->size = itemSize;
-    slist->head->data = NULL;
-    slist->head->next = NULL;
+    slist->head=NULL;
     return slist;
 }
 
@@ -24,6 +24,7 @@ void _clear(Node * node, void(*destroy)( void * )) {
     if (node == NULL) return;
     if (destroy!=NULL) destroy(node->data);
     _clear(node->next, destroy);
+    free(node);
 }
 
 void slist_destroy(void * slist, void(*destroy)( void * )) {
@@ -34,23 +35,19 @@ void slist_destroy(void * slist, void(*destroy)( void * )) {
 }
 
 void slist_clear(void * slist, void(*destroy)( void * )) {
-    Slist * list = (Slist *)slist;
-    _clear(list->head,destroy);
-    list->head = NULL;
+    _clear(((Slist *)slist)->head,destroy);
 }
 
 void * slist_init(void * slist, size_t itemSize, void(*destroy)(void*)) {
-    Slist * list = (Slist *)slist;
-    slist_clear(slist, destroy);
-    list->size = itemSize;
-    return list;
+    slist_clear((Slist *)slist, destroy);
+    ((Slist *)slist)->size = itemSize;
+    return slist;
 }
 
 size_t slist_count(const void * slist) {
-    Slist * list = (Slist *)slist;
-    if (list == NULL) return INVALID;
+    if (slist == NULL) return INVALID;
     size_t count = 0;
-    Node * node = list->head;
+    Node * node = ((Slist *)slist)->head;
     while (node != NULL) {
         count++;
         node = node->next;
@@ -59,9 +56,8 @@ size_t slist_count(const void * slist) {
 }
 
 void * slist_item(void * slist, size_t i) {
-    Slist * list = (Slist *)slist;
-    if (list == NULL) return NULL;
-    Node * node = list->head;
+    if (slist == NULL) return NULL;
+    Node * node = ((Slist *)slist)->head;
     while (i > 0 && node != NULL) { // вернёт NULL, если i > slist_count(slist)
         node = node->next;
         i--;
