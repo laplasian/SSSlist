@@ -14,7 +14,7 @@ typedef struct {
     float d_variable;
 } Value;
 
-int test_slist_create() {
+int multitest() {
     //Создаем односвязный список с элементами типа Value;
     void* slist = slist_create(sizeof(Value));
 
@@ -42,8 +42,10 @@ int test_slist_create() {
     //assert(slist_next(slist, slist_first(slist)) == slist_stop(slist));
 
     slist_destroy(slist, NULL);
+    return 1;
+};
 
-
+int test_slist_create() {
     return 1;
 }
 int test_slist_destroy() {
@@ -92,6 +94,7 @@ int test_users_mood() {
 typedef int (Test)();
 
 Test* all_tests[] = {
+    &multitest,
     &test_slist_create,
     &test_slist_clear,
     &test_slist_count,
