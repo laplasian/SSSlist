@@ -1,5 +1,4 @@
 #include "slist.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 
