@@ -62,45 +62,44 @@ void * slist_item(void * slist, size_t i) {
         node = node->next;
         i--;
     }
-    return node;
+    if (node == NULL) return NULL;
+    return node->data;
 }
 
 void * slist_prepend(void * slist) {
-    Slist * list = (Slist *)slist;
     Node * node = malloc(sizeof(Node));
-    node->data = malloc(list->size);
-    node->next = list->head;
-    list->head = node;
+    if (node == NULL) return NULL;
+    node->data = malloc(((Slist *)slist)->size);
+    if (node->data == NULL) return NULL;
+    node->next = ((Slist *)slist)->head;
+    ((Slist *)slist)->head = node;
     return node->data;
 }
 
 void slist_remove(void * slist, void(*destroy)( void * )) {
-    Slist * list = (Slist *)slist;
-    if (list == NULL) return;
-    Node * node = list->head;
+    if (slist == NULL) return;
+    Node * node = ((Slist *)slist)->head;
     if (node == NULL) return;
-    list->head = node->next;
+    ((Slist *)slist)->head = node->next;
     if (destroy != NULL) destroy(node->data);
     free(node);
 }
 
 size_t slist_first(const void * slist) {
-    Slist * list = (Slist *)slist;
-    if (list == NULL) return INVALID;
-    return (size_t)list->head; // приведение указателя к целому числу
+    if (slist == NULL || ((Slist *)slist)->head == NULL) return INVALID;
+    return (size_t)((Slist *)slist)->head; // приведение указателя к целому числу
 }
 
 size_t slist_next(const void * slist, size_t item_id) {
     Node * node = (Node *)item_id; // приведение целого числа к указателю
-    if (node == NULL) return INVALID;
+    if (node == NULL || node->next == NULL) return INVALID;
     return (size_t)node->next;
 }
 
 size_t slist_stop(const void * slist) {
     if (slist == NULL) return INVALID;
-    Slist * list = (Slist *)slist;
-    if (list->head == NULL) return INVALID;
-    Node * node = list->head;
+    if (((Slist *)slist)->head == NULL) return INVALID;
+    Node * node = ((Slist *)slist)->head;
     while (node->next != NULL) {
         node = node->next;
     }
@@ -112,9 +111,14 @@ void * slist_current(const void * slist, size_t item_id) {
 }
 
 void * slist_insert(void * slist, size_t item_id) {
-    return NULL;
+    Node* current = (Node *)item_id;
+    Node* new = malloc(sizeof(Node));
+    new->next = current;
+    current->next = new;
+
+    return slist;
 }
 
 void slist_erase(void * slist, size_t item_id, void(*destroy)( void * )) {
-
+    Node* current = (Node *)item_id;
 }
