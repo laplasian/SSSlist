@@ -23,23 +23,25 @@ void * slist_create(size_t itemSize) {
     return slist;
 }
 
-static Node * create_node(const size_t item_size) {
+static Node * create_node(const Slist * slist) {
     Node * new = malloc(sizeof(Node));
     if (new == NULL) return NULL;
-    new->data = malloc(item_size);
+    new->data = malloc(((Slist *)slist)->item_size);
     if (new->data == NULL) {
         free(new);
         return NULL;
     }
+    ((Slist *)slist)->size += 1;
     return new;
 }
 
-static Node * delete_node(Node * node, void(*destroy)( void * )) {
+static Node * delete_node(const Slist * slist, Node * node, void(*destroy)( void * )) {
     if (node == NULL) return NULL;
     Node * next = node->next;
     if (destroy != NULL) destroy(node->data);
     free(node->data);
     free(node);
+    ((Slist *)slist)->size -= 1;
     return next;
 }
 
@@ -53,7 +55,7 @@ void slist_clear(void * slist, void(*destroy)( void * )) {
     if (slist == NULL) return;
     Node* current = ((Slist *)slist)->head;
     while (current != NULL) {
-        current = delete_node(current, destroy);
+        current = delete_node(slist, current, destroy);
     }
     ((Slist *)slist)->head = NULL;
     ((Slist *)slist)->size = 0;
@@ -73,7 +75,7 @@ size_t slist_count(const void * slist) {
 }
 
 void * slist_item(void * slist, size_t i) {
-    if (slist == NULL || i >= slist_count(slist)) return NULL; // вроде бы должен выкидывать если head == NULL
+    if (slist == NULL || i >= slist_count(slist) || i > 0) return NULL;
     Node * node = ((Slist *)slist)->head;
     while (i > 0) {
         node = node->next;
@@ -84,19 +86,17 @@ void * slist_item(void * slist, size_t i) {
 
 void * slist_prepend(void * slist) {
     if (slist == NULL) return NULL;
-    Node * node = create_node(((Slist *)slist)->item_size);
+    Node * node = create_node(slist);
     if (node == NULL) return NULL;
     node->next = ((Slist *)slist)->head;
     ((Slist *)slist)->head = node;
-    ((Slist *)slist)->size += 1;
     return node->data;
 }
 
 void slist_remove(void * slist, void(*destroy)( void * )) {
     if (slist == NULL || ((Slist *)slist)->head == NULL) return;
-    Node * node = delete_node(((Slist *)slist)->head, destroy);
+    Node * node = delete_node(slist, ((Slist *)slist)->head, destroy);
     ((Slist *)slist)->head = node;
-    ((Slist *)slist)->size -= 1;
 }
 
 size_t slist_first(const void * slist) {
@@ -112,11 +112,11 @@ size_t slist_next(const void * slist, size_t item_id) {
 }
 
 size_t slist_stop(const void * slist) {
-    return (size_t)((Slist *)slist)->head;
+    return (size_t)NULL;
 }
 
 void * slist_current(const void * slist, size_t item_id) {
-    if (slist == NULL) return NULL;
+    if (slist == NULL || item_id == slist_stop(slist)) return NULL;
     return ((Node *)item_id)->data;
 }
 
@@ -126,7 +126,7 @@ void * slist_insert(void * slist, size_t item_id) {
         return slist_prepend(slist);
     }
     Node* current = (Node *)item_id;
-    Node* new = create_node((((Slist *)slist)->item_size));
+    Node* new = create_node(slist);
     if (new == NULL) return NULL;
     new->next = current->next;
     current->next = new;
@@ -134,7 +134,7 @@ void * slist_insert(void * slist, size_t item_id) {
 }
 
 void slist_erase(void * slist, size_t item_id, void(*destroy)( void * )) {
-    if (slist == NULL || ((Slist *)slist)->head) return;
+    if (slist == NULL || ((Slist *)slist)->head == NULL || slist_stop(slist) == item_id) return;
     Node* current = ((Slist *)slist)->head;
     while ((size_t)(current->next) != item_id) {
         if (NULL == current) return;
@@ -142,6 +142,5 @@ void slist_erase(void * slist, size_t item_id, void(*destroy)( void * )) {
     }
     Node* _del = current->next;
     current = current->next->next;
-    delete_node(_del, destroy);
-    ((Slist *)slist)->size -= 1;
+    delete_node(slist, _del, destroy);
 }
