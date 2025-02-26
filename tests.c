@@ -29,55 +29,124 @@ typedef struct {
 #define insert slist_insert
 #define erase slist_erase
 
-int multitest() {
-    //Создаем односвязный список с элементами типа Value;
-    void* slist = slist_create(sizeof(Value));
+void test_nullContainer_stop_OK() {
+    assert(slist_stop(NULL) == (size_t)NULL);
+}
 
-    assert(0 == slist_count(slist));
-    assert(slist_stop(slist) == slist_first(slist));
+void test_nullContainer_firstEqualsStop_OK() {
+    assert(slist_first(NULL) == slist_stop(NULL));
+}
 
-    ///
-    assert(stop(null) == 0);
-    assert(first(null) == stop(null));
-    assert(current(null, stop(null)) == null);
-    assert(next(null, stop(null)) == stop(null));
-    for(size_t i = first(null); i != stop(null); i = next(null, i)) { }
-    assert(insert(null, stop(null)) == null);
+void test_nullContainer_current_FAIL() {
+    assert(slist_current(NULL, slist_stop(NULL)) == NULL);
+}
 
-    ///
+void test_nullContainer_nextStopEqualsStop_OK() {
+    assert(slist_next(NULL, slist_stop(NULL)) == slist_stop(NULL));
+}
 
-    //Создаем объект для односвязного списка
-    Value value = { {1, 2, 3, 4, 5, 6, 7, 8}, 0.f };
+void test_nullContainer_forwardLoop_OK() {
+    for (size_t i = slist_first(NULL); i != slist_stop(NULL); i = slist_next(NULL, i)) {}
+}
 
-    //Добавляем новый элемент в односвязный список
-    Value* insertedValue = (Value*)slist_prepend(slist);
+void test_nullContainer_insert_FAIL() {
+    assert(slist_insert(NULL, slist_stop(NULL)) == NULL);
+}
 
-    //Инициализируем добавленный элемент
-    *insertedValue = value;
+void test_nullContainer_erase_OK() {
+    slist_erase(NULL, slist_stop(NULL), NULL);
+}
 
-    Value* _item = (Value*)slist_item(slist, 0);
+void test_nullContainer_eraseWithoutDtor_OK() {
+    slist_erase(NULL, slist_stop(NULL), NULL);
+}
 
-    assert(current(slist, stop(slist)) == null);
-    void* _item2 = insert(slist, stop(slist));
-    assert(_item2 != null);
+void test_emptyContainer_prepend_count_item_OK() {
+    void *list = slist_create(sizeof(int));
+    assert(slist_prepend(list) != NULL);
+    assert(slist_count(list) == 1);
+    slist_destroy(list, NULL);
+}
+
+void test_emptyContainer_current_FAIL() {
+    void *list = slist_create(sizeof(int));
+    assert(slist_current(list, slist_stop(list)) == NULL);
+    slist_destroy(list, NULL);
+}
+
+void test_emptyContainer_insert_count_item_OK() {
+    void *list = slist_create(sizeof(int));
+    assert(slist_insert(list, slist_stop(list)) != NULL);
+    assert(slist_count(list) == 1);
+    slist_destroy(list, NULL);
+}
+
+void test_emptyContainer_erase_OK() {
+    void *list = slist_create(sizeof(int));
+    slist_erase(list, slist_stop(list), NULL);
+    slist_destroy(list, NULL);
+}
+
+void test_emptyContainer_eraseWithoutDtor_OK() {
+    void *list = slist_create(sizeof(int));
+    slist_erase(list, slist_stop(list), NULL);
+    slist_destroy(list, NULL);
+}
 
 
-    for (size_t i = 0; 8 > i; ++i) {
-        assert(_item->array[i] == value.array[i]);
-    }
+void test_singleElementContainer_destroy_OK() {
+    void *list = slist_create(sizeof(int));
+    slist_prepend(list);
+    slist_destroy(list, NULL);
+}
 
-    assert(fabsf(_item->d_variable - value.d_variable) < 1e-10f);
-    assert(NULL == slist_item(slist, 1));
+void test_singleElementContainer_item_OK() {
+    void *list = slist_create(sizeof(int));
+    int *elem = (int *)slist_prepend(list);
+    assert(elem != NULL);
+    assert(slist_item(list, 0) == elem);
+    slist_destroy(list, NULL);
+}
 
+void test_singleElementContainer_itemSubZero_FAIL() {
+    void *list = slist_create(sizeof(int));
+    slist_prepend(list);
+    assert(slist_item(list, -1) == NULL);
+    slist_destroy(list, NULL);
+}
 
-    //assert(slist_next(slist, slist_first(slist)) == slist_stop(slist));
+void test_singleElementContainer_itemOutsideRange_FAIL() {
+    void *list = slist_create(sizeof(int));
+    slist_prepend(list);
+    assert(slist_item(list, 1) == NULL);
+    slist_destroy(list, NULL);
+}
 
-    slist_destroy(slist, NULL);
-
-    return 1;
-};
-
+void test_twoElementContainer_create_destroy() {
+    void *list = slist_create(sizeof(int));
+    slist_prepend(list);
+    slist_prepend(list);
+    slist_destroy(list, NULL);
+}
 
 void run_tests() {
-    multitest();
-};
+    test_nullContainer_stop_OK();
+    test_nullContainer_firstEqualsStop_OK();
+    test_nullContainer_current_FAIL();
+    test_nullContainer_nextStopEqualsStop_OK();
+    test_nullContainer_forwardLoop_OK();
+    test_nullContainer_insert_FAIL();
+    test_nullContainer_erase_OK();
+    test_nullContainer_eraseWithoutDtor_OK();
+    test_emptyContainer_prepend_count_item_OK();
+    test_emptyContainer_current_FAIL();
+    test_emptyContainer_insert_count_item_OK();
+    test_emptyContainer_erase_OK();
+    test_emptyContainer_eraseWithoutDtor_OK();
+    test_singleElementContainer_destroy_OK();
+    test_singleElementContainer_item_OK();
+    test_singleElementContainer_itemSubZero_FAIL();
+    test_singleElementContainer_itemOutsideRange_FAIL();
+    test_twoElementContainer_create_destroy();
+    printf("All tests passed!\n");
+}
