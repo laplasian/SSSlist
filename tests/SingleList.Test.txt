@@ -58,7 +58,7 @@ destroy(C, ~Elem)
 ---------------------------------------------------------------
 [Info message]: count(null) == INVALID
 ---------------------------------------------------------------
-[       OK ] nullContainer.count_INVALID (0 ms)
+[       OK ] nullContainer.count_INVALID (1 ms)
 [ RUN      ] nullContainer.item_FAIL
 
 ---------------------------------------------------------------
@@ -100,58 +100,50 @@ destroy(C, ~Elem)
 ---------------------------------------------------------------
 [Info message]: stop(null)
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] nullContainer.stop_OK (1 ms)
+[       OK ] nullContainer.stop_OK (0 ms)
 [ RUN      ] nullContainer.firstEqualsStop_OK
 
 ---------------------------------------------------------------
 [Info message]: first(null) == stop(null)
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] nullContainer.firstEqualsStop_OK (0 ms)
+[       OK ] nullContainer.firstEqualsStop_OK (0 ms)
 [ RUN      ] nullContainer.current_FAIL
 
 ---------------------------------------------------------------
 [Info message]: current(null, stop(null)) == null
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] nullContainer.current_FAIL (0 ms)
+[       OK ] nullContainer.current_FAIL (0 ms)
 [ RUN      ] nullContainer.nextStopEqualsStop_OK
 
 ---------------------------------------------------------------
 [Info message]: next(null, stop(null)) == stop(null)
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] nullContainer.nextStopEqualsStop_OK (0 ms)
+[       OK ] nullContainer.nextStopEqualsStop_OK (0 ms)
 [ RUN      ] nullContainer.forwardLoop_OK
 
 ---------------------------------------------------------------
 [Info message]: for(i = first(null); i != stop(null); i = next(null, i)) { }
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] nullContainer.forwardLoop_OK (0 ms)
+[       OK ] nullContainer.forwardLoop_OK (0 ms)
 [ RUN      ] nullContainer.insert_FAIL
 
 ---------------------------------------------------------------
 [Info message]: insert(null, stop(null)) == null
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] nullContainer.insert_FAIL (0 ms)
+[       OK ] nullContainer.insert_FAIL (0 ms)
 [ RUN      ] nullContainer.erase_OK
 
 ---------------------------------------------------------------
 [Info message]: erase(null, stop(null), ~Elem)
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] nullContainer.erase_OK (0 ms)
+[       OK ] nullContainer.erase_OK (0 ms)
 [ RUN      ] nullContainer.eraseWithoutDtor_OK
 
 ---------------------------------------------------------------
 [Info message]: erase(null, stop(null), null)
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] nullContainer.eraseWithoutDtor_OK (1 ms)
-[----------] 23 tests from nullContainer (14 ms total)
+[       OK ] nullContainer.eraseWithoutDtor_OK (0 ms)
+[----------] 23 tests from nullContainer (1 ms total)
 
 [----------] 20 tests from emptyContainer
 [ RUN      ] emptyContainer.destroy_OK
@@ -173,7 +165,7 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
 count(C) == 0
 
 ---------------------------------------------------------------
-[       OK ] emptyContainer.clear_count_OK (0 ms)
+[       OK ] emptyContainer.clear_count_OK (1 ms)
 [ RUN      ] emptyContainer.clearWithoutDtor_count_OK
 
 ---------------------------------------------------------------
@@ -255,8 +247,7 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 ---------------------------------------------------------------
 [Info message]: current(C, stop(C)) == null
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] emptyContainer.current_FAIL (1 ms)
+[       OK ] emptyContainer.current_FAIL (0 ms)
 [ RUN      ] emptyContainer.nextStopEqualsStop_OK
 
 ---------------------------------------------------------------
@@ -268,7 +259,7 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
 ---------------------------------------------------------------
 [Info message]: for(i = first(C); i != stop(C); i = next(C, i)) { }
 ---------------------------------------------------------------
-[       OK ] emptyContainer.forwardLoop_OK (0 ms)
+[       OK ] emptyContainer.forwardLoop_OK (1 ms)
 [ RUN      ] emptyContainer.insert_count_item_OK
 
 ---------------------------------------------------------------
@@ -285,16 +276,14 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 ---------------------------------------------------------------
 [Info message]: erase(C, stop(C), ~Elem)
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] emptyContainer.erase_OK (0 ms)
+[       OK ] emptyContainer.erase_OK (0 ms)
 [ RUN      ] emptyContainer.eraseWithoutDtor_OK
 
 ---------------------------------------------------------------
 [Info message]: erase(C, stop(C), null)
 ---------------------------------------------------------------
-unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
-[  FAILED  ] emptyContainer.eraseWithoutDtor_OK (0 ms)
-[----------] 20 tests from emptyContainer (1 ms total)
+[       OK ] emptyContainer.eraseWithoutDtor_OK (0 ms)
+[----------] 20 tests from emptyContainer (2 ms total)
 
 [----------] 18 tests from singleElementContainer
 [ RUN      ] singleElementContainer.destroy_OK
@@ -334,7 +323,7 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [Info message]: item(C, 1) == null
 ---------------------------------------------------------------
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
-[  FAILED  ] singleElementContainer.itemOutsideRange_FAIL (1 ms)
+[  FAILED  ] singleElementContainer.itemOutsideRange_FAIL (0 ms)
 [ RUN      ] singleElementContainer.prepend_count_item_OK
 
 ---------------------------------------------------------------
@@ -345,8 +334,16 @@ item(C, 0) == E
 item(C, 1) != E
 
 ---------------------------------------------------------------
+
+---------------------------------------------------------------
+[Error message]: item(C, 1): content modified.
+---------------------------------------------------------------
+C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(561): error: Value of: person_CHECK(item(1), 0)
+  Actual: false
+Expected: true
+0000000000000000
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
-[  FAILED  ] singleElementContainer.prepend_count_item_OK (0 ms)
+[  FAILED  ] singleElementContainer.prepend_count_item_OK (1 ms)
 [ RUN      ] singleElementContainer.remove_count_OK
 
 ---------------------------------------------------------------
@@ -366,7 +363,6 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 ---------------------------------------------------------------
 [Info message]: first(C) != stop(C)
 ---------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(585): error: Expected: (first()) != (stop()), actual: 2213843320944 vs 2213843320944
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [  FAILED  ] singleElementContainer.firstNotEqualsStop_OK (0 ms)
 [ RUN      ] singleElementContainer.currentfirst_OK
@@ -383,9 +379,6 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 ---------------------------------------------------------------
 [Info message]: current(C, stop(C)) == null
 ---------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(606): error: Value of: current(stop()) == NULL
-  Actual: false
-Expected: true
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [  FAILED  ] singleElementContainer.currentStop_FAIL (0 ms)
 [ RUN      ] singleElementContainer.nextFirstEqualsStop_OK
@@ -394,7 +387,7 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [Info message]: next(C, first(C)) == stop(C)
 ---------------------------------------------------------------
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
-[  FAILED  ] singleElementContainer.nextFirstEqualsStop_OK (1 ms)
+[  FAILED  ] singleElementContainer.nextFirstEqualsStop_OK (0 ms)
 [ RUN      ] singleElementContainer.forwardLoop_OK
 
 ---------------------------------------------------------------
@@ -414,38 +407,24 @@ item(C, 1) == E
 ---------------------------------------------------------------
 
 ---------------------------------------------------------------
-[Error message]: item(C, 0) == E: wrong position.
----------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(651): error: Expected: (item(0)) != (p), actual: 0000020373581660 vs 0000020373581660
-0000000000000000
-
----------------------------------------------------------------
-[Error message]: item(C, 0): content modified.
----------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(654): error: Value of: person_CHECK(item(0), 0)
-  Actual: false
-Expected: true
-0000000000000000
-
----------------------------------------------------------------
 [Error message]: item(C, 1) != E: different pointers.
 ---------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(657): error: Expected equality of these values:
+C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(659): error: Expected equality of these values:
   item(1)
-    Which is: 00000203735815F0
+    Which is: NULL
   p
-    Which is: 0000020373581660
+    Which is: 0000014D074F1EF0
 0000000000000000
 
 ---------------------------------------------------------------
 [Error message]: item(C, 1) != E: different content.
 ---------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(660): error: Value of: person_CHECK(item(1), 1)
+C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(662): error: Value of: person_CHECK(item(1), 1)
   Actual: false
 Expected: true
 0000000000000000
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
-[  FAILED  ] singleElementContainer.insertFirst_count_item_OK (0 ms)
+[  FAILED  ] singleElementContainer.insertFirst_count_item_OK (1 ms)
 [ RUN      ] singleElementContainer.insertStop_count_item_FAIL
 
 ---------------------------------------------------------------
@@ -458,7 +437,7 @@ count(C) == 1
 ---------------------------------------------------------------
 [Error message]: E != null: implementation error.
 ---------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(673): error: Value of: p == NULL
+C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(675): error: Value of: p == NULL
   Actual: false
 Expected: true
 0000000000000000
@@ -466,7 +445,7 @@ Expected: true
 ---------------------------------------------------------------
 [Error message]: count(C) != 1: improper number of elements in container.
 ---------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(676): error: Expected equality of these values:
+C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(678): error: Expected equality of these values:
   count()
     Which is: 2
   1
@@ -475,12 +454,12 @@ C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(676): erro
 ---------------------------------------------------------------
 [Error message]: item(C, 0): content modified.
 ---------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(679): error: Value of: person_CHECK(item(0), 0)
+C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(681): error: Value of: person_CHECK(item(0), 0)
   Actual: false
 Expected: true
 0000000000000000
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
-[  FAILED  ] singleElementContainer.insertStop_count_item_FAIL (1 ms)
+[  FAILED  ] singleElementContainer.insertStop_count_item_FAIL (0 ms)
 [ RUN      ] singleElementContainer.eraseFirst_count_OK
 
 ---------------------------------------------------------------
@@ -488,15 +467,7 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 count(C) == 0
 
 ---------------------------------------------------------------
-
----------------------------------------------------------------
-[Error message]: count(C) != 0: improper number of elements in container.
----------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(691): error: Expected equality of these values:
-  count()
-    Which is: 1
-  0
-0000000000000000
+unknown file: error: SEH exception with code 0xc0000005 thrown in the test body.
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [  FAILED  ] singleElementContainer.eraseFirst_count_OK (0 ms)
 [ RUN      ] singleElementContainer.eraseStop_count_OK
@@ -516,7 +487,7 @@ count(C) == 1
 
 ---------------------------------------------------------------
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
-[  FAILED  ] singleElementContainer.eraseStopWithoutDtor_count_OK (0 ms)
+[  FAILED  ] singleElementContainer.eraseStopWithoutDtor_count_OK (1 ms)
 [----------] 18 tests from singleElementContainer (3 ms total)
 
 [----------] 4 tests from twoElementContainer
@@ -531,7 +502,6 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 current(first()) != NULL
 
 ---------------------------------------------------------------
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(739): error: Expected: (it) != (stop()), actual: 2213843363360 vs 2213843363360
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [  FAILED  ] twoElementContainer.contains (0 ms)
 [ RUN      ] twoElementContainer.remove
@@ -542,19 +512,17 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 
 ---------------------------------------------------------------
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
-[  FAILED  ] twoElementContainer.remove (1 ms)
+[  FAILED  ] twoElementContainer.remove (0 ms)
 [ RUN      ] twoElementContainer.first
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(761): error: Expected: (it0) != (stop()), actual: 2213843367120 vs 2213843367120
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [  FAILED  ] twoElementContainer.first (0 ms)
-[----------] 4 tests from twoElementContainer (1 ms total)
+[----------] 4 tests from twoElementContainer (0 ms total)
 
 [----------] 4 tests from threeElementContainer
 [ RUN      ] threeElementContainer.create_destroy
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [  FAILED  ] threeElementContainer.create_destroy (0 ms)
 [ RUN      ] threeElementContainer.forward_loop
-C:\Users\dmitr\Documents\OOP_AFTI\01-WarmUp\SingleList\slist.test.cpp(778): error: Expected: (it) != (stop()), actual: 2213843368240 vs 2213843368240
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [  FAILED  ] threeElementContainer.forward_loop (0 ms)
 [ RUN      ] threeElementContainer.init
@@ -569,26 +537,15 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [Info message]: If the test is failed, then function 'slist_init' does not work correctly with item size zero.
 ---------------------------------------------------------------
 unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
-[  FAILED  ] threeElementContainer.init_zero_sized_item (0 ms)
-[----------] 4 tests from threeElementContainer (0 ms total)
+[  FAILED  ] threeElementContainer.init_zero_sized_item (1 ms)
+[----------] 4 tests from threeElementContainer (1 ms total)
 
 [----------] Global test environment tear-down
-[==========] 69 tests from 5 test suites ran. (20 ms total)
-[  PASSED  ] 33 tests.
-[  FAILED  ] 36 tests, listed below:
-[  FAILED  ] nullContainer.stop_OK
-[  FAILED  ] nullContainer.firstEqualsStop_OK
-[  FAILED  ] nullContainer.current_FAIL
-[  FAILED  ] nullContainer.nextStopEqualsStop_OK
-[  FAILED  ] nullContainer.forwardLoop_OK
-[  FAILED  ] nullContainer.insert_FAIL
-[  FAILED  ] nullContainer.erase_OK
-[  FAILED  ] nullContainer.eraseWithoutDtor_OK
+[==========] 69 tests from 5 test suites ran. (7 ms total)
+[  PASSED  ] 44 tests.
+[  FAILED  ] 25 tests, listed below:
 [  FAILED  ] emptyContainer.prepend_count_item_OK
-[  FAILED  ] emptyContainer.current_FAIL
 [  FAILED  ] emptyContainer.insert_count_item_OK
-[  FAILED  ] emptyContainer.erase_OK
-[  FAILED  ] emptyContainer.eraseWithoutDtor_OK
 [  FAILED  ] singleElementContainer.destroy_OK
 [  FAILED  ] singleElementContainer.item_OK
 [  FAILED  ] singleElementContainer.itemSubZero_FAIL
@@ -613,4 +570,4 @@ unknown file: error: SEH exception with code 0xc0000005 thrown in TearDown().
 [  FAILED  ] threeElementContainer.forward_loop
 [  FAILED  ] threeElementContainer.init_zero_sized_item
 
-36 FAILED TESTS
+25 FAILED TESTS

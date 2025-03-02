@@ -27,6 +27,7 @@ static Node * create_node(const Slist * slist) {
     Node * new = malloc(sizeof(Node));
     if (new == NULL) return NULL;
     new->data = malloc(((Slist *)slist)->item_size);
+    new->next = NULL;                                 // fixed
     if (new->data == NULL) {
         free(new);
         return NULL;
@@ -35,7 +36,7 @@ static Node * create_node(const Slist * slist) {
     return new;
 }
 
-static Node * delete_node(const Slist * slist, Node * node, void(*destroy)( void * )) {
+static Node * delete_node(const Slist * slist, Node * node, void(*destroy)( void * )) { // возвращает следующий узел
     if (node == NULL) return NULL;
     Node * next = node->next;
     if (destroy != NULL) destroy(node->data);
@@ -47,7 +48,7 @@ static Node * delete_node(const Slist * slist, Node * node, void(*destroy)( void
 
 void slist_destroy(void * slist, void(*destroy)( void * )) {
     if (slist == NULL) return;
-    slist_clear(((Slist *)slist)->head, destroy);
+    slist_clear(slist, destroy);                       // fixed
     free(slist);
 }
 
@@ -75,13 +76,13 @@ size_t slist_count(const void * slist) {
 }
 
 void * slist_item(void * slist, size_t i) {
-    if (slist == NULL || i >= slist_count(slist) || i > 0) return NULL;
+    if (slist == NULL || i >= slist_count(slist)) return NULL;    // fixed
     Node * node = ((Slist *)slist)->head;
-    while (i > 0) {
+    while (node != NULL && i > 0) {                            // fixed
         node = node->next;
         i--;
     }
-    return node->data;
+    return node == NULL ? NULL : node->data;
 }
 
 void * slist_prepend(void * slist) {
@@ -94,9 +95,8 @@ void * slist_prepend(void * slist) {
 }
 
 void slist_remove(void * slist, void(*destroy)( void * )) {
-    if (slist == NULL || ((Slist *)slist)->head == NULL) return;
-    Node * node = delete_node(slist, ((Slist *)slist)->head, destroy);
-    ((Slist *)slist)->head = node;
+    if (slist == NULL) return;                                   // fixed
+    ((Slist *)slist)->head = delete_node(slist, ((Slist *)slist)->head, destroy);
 }
 
 size_t slist_first(const void * slist) {
@@ -105,10 +105,9 @@ size_t slist_first(const void * slist) {
 }
 
 size_t slist_next(const void * slist, size_t item_id) {
-    if (slist == NULL || ((Slist *)slist)->head == NULL) return slist_stop(slist);
-    Node * node = (Node *)item_id; // приведение целого числа к указателю
-    if (node == NULL || node->next == NULL) return slist_stop(slist);
-    return (size_t)node->next;
+    if (slist == NULL ||  item_id == slist_stop(slist)) return slist_stop(slist);   // fixed
+    Node * node = (Node *)item_id;
+    return (size_t)node->next;  // приведение целого числа к указателю
 }
 
 size_t slist_stop(const void * slist) {
@@ -122,8 +121,9 @@ void * slist_current(const void * slist, size_t item_id) {
 
 void * slist_insert(void * slist, size_t item_id) {
     if (slist == NULL) return NULL;
-    if (item_id == slist_stop(slist)) {
-        return slist_prepend(slist);
+    if (((Slist *)slist)->head == NULL) {
+        if (item_id == slist_stop(slist)) return slist_prepend(slist);
+        return NULL;
     }
     Node* current = (Node *)item_id;
     Node* new = create_node(slist);
@@ -137,10 +137,8 @@ void slist_erase(void * slist, size_t item_id, void(*destroy)( void * )) {
     if (slist == NULL || ((Slist *)slist)->head == NULL || slist_stop(slist) == item_id) return;
     Node* current = ((Slist *)slist)->head;
     while ((size_t)(current->next) != item_id) {
-        if (NULL == current) return;
+        if (current == NULL) return;
         current = current->next;
     }
-    Node* _del = current->next;
-    current = current->next->next;
-    delete_node(slist, _del, destroy);
+    current->next = delete_node(slist, current->next, destroy);
 }
