@@ -136,6 +136,10 @@ void * slist_insert(void * slist, size_t item_id) {
 void slist_erase(void * slist, size_t item_id, void(*destroy)( void * )) {
     if (slist == NULL || ((Slist *)slist)->head == NULL || slist_stop(slist) == item_id) return;
     Node* current = ((Slist *)slist)->head;
+    if (current == (Node *)item_id) {
+        slist_remove(slist, destroy);
+        return;
+    }
     while ((size_t)(current->next) != item_id) {
         if (current == NULL) return;
         current = current->next;
