@@ -120,10 +120,9 @@ void * slist_current(const void * slist, size_t item_id) {
 }
 
 void * slist_insert(void * slist, size_t item_id) {
-    if (slist == NULL || item_id == slist_stop(slist)) return NULL; // fixed
-    if (((Slist *)slist)->head == NULL) {
-        if (item_id == slist_stop(slist)) return slist_prepend(slist);
-        return NULL;
+    if slist == NULL || item_id == slist_stop(slist) && ((Slist *)slist)->head != NULL) return NULL; // fixed
+    if (item_id == slist_stop(slist)) {
+        return slist_prepend(slist);
     }
     Node* current = (Node *)item_id;
     Node* new = create_node(slist);
